@@ -89,8 +89,11 @@ class ExtractWorker(QThread):
 
             for i, name in enumerate(img_entries):
                 self.progress.emit(i + 1, total)
-                suffix = Path(name).suffix.lower()
-                fname = out / f"img_{count + 1:04d}{suffix}"
+                original = Path(name).name          # preserve original filename
+                fname = out / original
+                if fname.exists():                  # resolve collision
+                    stem, suf = Path(original).stem, Path(original).suffix
+                    fname = out / f"{stem}_{count + 1:04d}{suf}"
                 fname.write_bytes(z.read(name))
                 count += 1
                 self.found.emit(str(fname))
