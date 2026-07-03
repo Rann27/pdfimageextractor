@@ -679,6 +679,10 @@ def main():
     palette.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.white)
     app.setPalette(palette)
 
+    icon_path = Path(__file__).parent / "icon.ico"
+    if icon_path.exists():
+        app.setWindowIcon(QIcon(str(icon_path)))
+
     win = MainWindow()
     win.show()
     sys.exit(app.exec())
